@@ -1,0 +1,389 @@
+White Wines Exploration by Diego Valdivieso
+========================================================
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+library('ggplot2')
+library('memisc')
+library('corrplot')
+library('psych')
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, Load_the_Data}
+ww <- read.csv('wineQualityWhites.csv')
+wws <- ww[,c(2:13)]
+wws$quality <- factor(wws$quality, ordered = T)
+```
+
+The goal of this report is to explore the white wine's dataset to determine which chemical properties influence the quality.
+
+# Univariate Plots Section
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, Univariate_Plots}
+str(wws)
+summary(wws)
+```
+
+
+```{r plot, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=fixed.acidity), data=wws) +
+  geom_histogram() 
+```
+
+<p>Most wines' fixed acidity lies between 6 and 8 with a peak around 7. The distribution is approximately normal with many outliers to the right. </p>
+
+
+```{r plot2, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=volatile.acidity), data=wws) +
+  geom_histogram(binwidth=0.01) +
+  scale_x_continuous(breaks = seq(0,max(wws$volatile.acidity),0.05))
+```
+
+<p>Most wines volatile acidity lies between 0.2 and 0.4. The distribution is roughly normal, but a bit right skewed. Again many outlier to the right.</p>
+
+```{r plot3, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=citric.acid), data=wws) +
+  geom_histogram(binwidth=0.01) +
+  scale_x_continuous(limits=c(0,0.9),breaks = seq(0,max(wws$citric.acid),0.05))
+```
+
+<p>The distribution is approximately normal but there is a striking peak close to 0.5. I wonder why this peak is placed at that particular value... There are multiples outliers to the right as in the last two plots.</p> 
+
+```{r plot4, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=residual.sugar), data=wws) +
+  geom_histogram(binwidth=0.1) +
+  scale_x_continuous(limits=c(0,30),breaks = seq(0,30,1))
+```
+<p>Very different from the previous variables distribution. It is notorious how the highest wine counts are placed around two and then the number decreases drastically to the right.</p>
+
+```{r plot5, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=chlorides), data=wws) +
+  geom_histogram(binwidth=0.001) +
+  scale_x_continuous(limits=c(0,0.2),breaks = seq(0,0.2,0.01))  
+```
+<p>It is again roughly normal, with multiples outliers to the right.</p>
+
+```{r plot6, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=free.sulfur.dioxide), data=wws) +
+  geom_histogram(binwidth=1) +
+  scale_x_continuous(limits=c(0,150),breaks = seq(0,150,10))    
+```
+<p>Roughly normal, with a salient peak around 30, which is a bit striking because the frequency for this peak is around 25 greater than the following peak.</p>
+
+```{r plot7, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=total.sulfur.dioxide), data=wws) +
+  geom_histogram(binwidth=5) +
+  scale_x_continuous(limits=c(0,300),breaks = seq(0,300,20))  
+```
+<p>Distribution approximately normal with a peak around 120.</p>
+
+```{r plot8, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=density), data=wws) +
+    geom_histogram(binwidth=0.0005) +
+    scale_x_continuous(limits=c(0.985,1.02),breaks = seq(0.985,1.02,0.005))
+```
+<p>Again distribution tends to be normal and many outliers to the right. The peak is around 0.9925</p>
+
+```{r plot9, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=pH), data=wws) +
+  geom_histogram(binwidth=0.01) +
+  scale_x_continuous(limits=c(2.7,max(wws$pH)),breaks = seq(2.7,max(wws$pH),0.1))
+```
+<p>It is the distribution closest to the normal one I've seen so far. And also one of the few without striking outliers.</p>
+
+```{r plot10, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=sulphates), data=wws) +
+  geom_histogram(binwidth=0.01) +
+  scale_x_continuous(limits=c(0.2,max(wws$sulphates)),breaks = seq(0.2,max(wws$sulphates),0.05))
+```
+<p>It is a right skewed distribution with some outliers to the right.</p>
+
+```{r plot11, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=alcohol), data=wws) +
+  geom_histogram(binwidth=0.1) +
+  scale_x_continuous(limits=c(8,max(wws$alcohol)),breaks = seq(8,max(wws$alcohol),0.5))
+
+summary(wws$alcohol)
+```
+<p>The distribution is skewed to right, but it is not a sharp decline (as happens with residual sugar), it is rather a more slight one. The peak is around 9.5, and there are not blatant outliers.</p>
+
+```{r plot12, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=quality), data=wws) +
+  geom_bar()
+```
+
+<p>Six is clearly the most frequent quality. In spite of the range goes from 0 to 10, there are not wines qualified with 0, 1, 2 or 10.</p>
+
+# Univariate Analysis
+
+There are 4898 white wines in the dataset with 12 features. The quality variable was converted from number into an ordered factor variable, with the following order:
+
+(worst) ------> (best)
+Quality: 0,1,2,3,4,5,6,7,8,9,10
+
+Other observations:
+
+Most wines are of quality 6.
+The median alcohol graduation is 10.4
+There is a little variation for pH, from 0.9871 to 1.0390.
+
+Quality and alcohol seems to be the most relevant features of the dataset. My goal is to determine which features influentiate the quality of the white wines. After analysing these univariate plots, I believe that the quality of the wine is mainly influenced by the alcolhol.
+
+I kept all the variables of the original dataset, and only changed the quality variable, which was converted from number to ordered factor variable.
+
+The explored distribution mainly tend to be normal, many of them right skewed and with multiple outliers. What caught my attention the most was a peak in citric acid distribution for a particular value close to 0.5 and the sharp decrease in residual sugar.
+
+------
+
+#Bivariate Plots Section
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, Bivariate_Plots}
+ww <- read.csv('wineQualityWhites.csv')
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+wws <- ww[,c(2:13)]
+wws$quality <- factor(wws$quality, ordered = T)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ww <- read.csv('wineQualityWhites.csv')
+
+M <- cor(ww[,c(2:13)]) # get correlations
+corrplot(M, method = "circle") #plot matrix
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+pairs.panels(wws)
+```
+
+
+Alcohol is the most correlated with quality, density is also correlated with it but less than alcohol.
+Total sulfur dioxide, residual sugar and chlorides do not seem to be high correlated with quality, but they are strongly correlated with alcohol (mainly the first two ones). And there is also a strong correlation between density and residual sugar, and both are strong correlated with alcohol. I would pay special attention at plots related to quality, alcohol and some of the previous mentioned variables.
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=alcohol,fill = quality),data=wws) +
+  scale_fill_brewer(palette='Reds') +
+  geom_histogram()
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(quality,alcohol),data=wws) +
+  geom_jitter(alpha=0.2)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(quality,alcohol),data=wws) +
+  geom_boxplot()
+
+by(wws$alcohol, wws$quality,summary)
+```
+
+The plots confirm the high correlation between alcohol and quality. The relationship doesn't seem to be linear. From three to five the median alcohol decrease and it increases from there on. There are very few wines under nine category, and one of them is an outlier.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=density,fill = quality),data=subset(wws, density<quantile(density,0.999))) +
+  scale_fill_brewer(palette='Reds') +
+  geom_histogram()
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(quality,density),data=subset(wws, density<quantile(density,0.9995))) +
+  geom_jitter(alpha=0.2)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(quality,density),data=subset(wws, density<quantile(density,0.9995))) +
+  geom_boxplot()
+
+by(wws$density, wws$quality,summary)
+```
+
+The relation between density and quality is not as clear as alcohol and quality, but in general quality seems to decrease when density decreases. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+require(gridExtra)
+
+p1 <- ggplot(aes(alcohol,density),data=subset(wws, density<quantile(density,0.9995))) +
+  geom_point(alpha=0.1) +
+  geom_smooth()
+
+p2 <- ggplot(aes(alcohol,total.sulfur.dioxide),data=wws) +
+  geom_point(alpha=0.03) +
+  geom_smooth()
+
+p3 <- ggplot(aes(alcohol,chlorides),data=wws) +
+  geom_point(alpha=0.03) +
+  geom_smooth()
+
+p4 <- ggplot(aes(alcohol,residual.sugar),data=subset(wws, residual.sugar<quantile(residual.sugar,0.9995))) +
+  geom_point(alpha=0.03)+
+  geom_smooth()
+
+grid.arrange(p1, arrangeGrob(p2,p3,p4, ncol=3), heights=c(2.5/4, 1.5/4), ncol=1)
+```
+
+<p>Across this serie of alcohol plots a negative correlation can be observed, being the most notorious the one related to density. The total sulfur dioxide and chlorides plots show a slight slope, whereas that in the residual.sugar plot has a non linear relation where two main groups with highest concentration of wines can be observed, one at the top left corner and the other one at the botom. </p>
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ssres = subset(wws, residual.sugar<quantile(residual.sugar,0.9995))
+ggplot(aes(residual.sugar,density), data = ssres) +
+  geom_point(alpha=0.1)+
+  geom_smooth() +
+  scale_x_continuous(breaks = seq(min(ssres$residual.sugar),max(ssres$residual.sugar),2))  
+  
+```
+<p>This plot shows a high correlation, and there is a clear concentration of wines around 1.6 of residual.sugar </p>
+
+#Bivariate Analysis
+
+As expected, quality is high correlated with alcohol, and also with density to a lesser extent.
+
+Relationship between alcohol and quality doesn't seem to be linear in general, but from quality six on it does. Something similar happens with density, but to a lesser extent and it has an opposing relationship to the one expressed by alcohol.
+
+On the other hand, alcohol is clearly negative correlated with four variables being density the most strong, followed by residual sugar, total sulfur dioxide and chlorides. From the plots related to these variables, the most striking was the one related to residual sugar, because unlike the others plots it shows an irregular distribution.
+
+Residual sugar and density are the highest correlated variables in the dataset.
+
+------
+
+#Multivariate Plots Section
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, Multivariate_Plots}
+ww <- read.csv('wineQualityWhites.csv')
+wws <- ww[,c(2:13)]
+wws$quality <- factor(wws$quality, ordered = T)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=total.sulfur.dioxide,y=density),data=subset(wws, total.sulfur.dioxide<quantile(total.sulfur.dioxide,0.99) & density<quantile(density,0.99))) +
+   scale_fill_brewer(palette = 'Blues') +
+  geom_point(aes(color=alcohol), alpha=0.7)
+```
+
+This plot shows a great variation, but it is clear that alcohol level tends to increase with density as much as with total sulfur dioxide.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=alcohol,y=density,color=quality),data=subset(wws, density<quantile(density,0.99))) +
+  scale_color_brewer(type = 'div') +
+  geom_point()
+```
+
+Given that Alcohol and Density are the most correlated variable with Quality, I expected this plot to show a significant relation between them. But I didn't get the expected result, the only strong relation in this plot is the one between alcohol and quality.
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=alcohol,y=residual.sugar,color=quality),data=subset(wws, residual.sugar<quantile(residual.sugar,0.99))) +
+  scale_color_brewer(type = 'div') +
+  geom_point()
+```
+<p>In spite of the correlation value is practically zero, I had some reasons to believe that there could be some correlation between these three variables, due to the fact that there is a strong correation between residual.sugar and alcohol and with alcohol and quality. But this plot only seems to show a strong correlation between alcohol and quality.</p>
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+wws$alcohol.bucket <- cut(wws$alcohol, c(7,8,9,10,11,12,13,14,15))
+
+ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),data=subset(wws, density<quantile(density,0.99))) +  scale_color_brewer(type = 'div') +
+  geom_point()
+```
+
+This plots seems to express a short trend between density, residual sugar and alcohol. The alcohol seems to be placed in three strips approximately. The lower one shows the biggest alcohol level, the middle one an intermediate level, and the upper one the lowest level.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),data=subset(wws, density<quantile(density,0.99))) +  scale_color_brewer(type = 'div') +
+  geom_point() +
+  facet_wrap(~quality)
+```
+
+There is a clear quality trend across this plots. As the quality increases it is notorious how it moves from upper strip to lower one.
+<!-- hacer otro plot: residual.sugar + density + alcohol -->
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+m1 <- lm(formula=quality ~ alcohol, data = ww)
+
+m2 <- update(m1, ~ . + density)
+
+m3 <- update(m2, ~ . + residual.sugar)
+
+m4 <- update(m3, ~ . + volatile.acidity)
+
+mtable(m1,m2,m3,m4,sdigits=min(3))
+```
+
+#Multivariate Analysis
+
+In general the correlations that shows the correlation matrix can be sustained across the plots of this section.
+Anyway, the plot of density, residual sugar and alcohol bucket shows some trend which cannot be deducted from the correlation matrix itself. This particular plot shows how the many alcohol levels tend to be grouped along well defined strips. As this caught my attention, y decided to create a linear model including this variables among others.
+
+Apart from the alcohol level strips I mentioned above, it surprised me adding the volatile.acidity variable in the linear model. I didn't expected that the r-squared increases much more than with density.
+
+
+I created the model to predict de withe wine's quality. The prediction accuracy is poor (the r-squared is lower than 0.3).
+It was clear from the begining that alcohol was going to have the biggest influence in the model. But it wasn't so clear that density was going to have fewer influence than volatile acidity. I think this is due to the fact that density is highly correlated with alcohol, and it doesn't provide any further information.  Which is different from volatile.acidity which is almost not correlated with alcohol but anyway has a correlation with quality, even though it is not a strong one.
+
+------
+
+#Final Plots and Summary
+###Plot One
+```{r, echo=FALSE, message=FALSE, warning=FALSE, Plot_One}
+ggplot(aes(x=quality), data=wws) +
+  geom_bar() +
+  labs(title = "White Wines Quality") +
+  xlab('Quality') +
+  ylab('Number of Wines')
+```
+
+###Description One
+<p>Quality seems to be normally distribuited, with a clear peak at quality six. Qualities 0,1,2 and 10 are not included, probably because the experts decided not to qualify a meassure less than three.</p>
+
+###Plot Two
+```{r, echo=FALSE, message=FALSE, warning=FALSE, Plot_Two}
+ggplot(aes(x=alcohol,fill = quality),data=wws) +
+  scale_fill_brewer(palette='Reds') +
+  geom_histogram() +
+  labs(title = "Alcohol by Quality") +
+  xlab('Alcohol') +
+  ylab('Number of Wines')
+
+ggplot(aes(quality,alcohol),data=wws) +
+  geom_boxplot() +
+  labs(title = "Quality by Alcohol") +
+  xlab('Quality') +
+  ylab('Alcohol')
+```
+
+###Description Two
+The correlation of quality with alcohol is not linear, but clearly the quality increases as the alcohol level increases from quality six.
+
+###Plot Three
+```{r, echo=FALSE, message=FALSE, warning=FALSE, Plot_Three}
+ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),data=subset(wws, density<quantile(density,0.99))) +  scale_color_brewer(type = 'div') +
+  geom_point() +
+  facet_wrap(~quality) +
+  labs(title = "Quality by Density, Residual Sugar and Alcohol") +
+  xlab('Residual Sugar') +
+  ylab('Density')
+```
+
+###Description Three
+In this plot a noticeable relation between quality and three other variables can be observed. The alcohol level is well defined into three main strips related to density and residual sugar. And it can be noticed how the strips tends to appear and disappear from worst to best quality.
+
+------
+
+#Reflection
+
+This dataset contains information for about 4898 white wines. Twelve variables are provided for each wine. Eleven of them describes the quimical composition, and the last one describe the quality. Given that information, I explored the quality across the provided variables.
+
+The correlation between quality and alcohol was the most notorious from the beginning, and beside this correlation I expected quality to be highly correlated with density. Having this in my mind the linear model took me by surprised, alcohol was indeed the most influential, but density barely had some influence.
+Moreover, what caught my attention the most was the influence of Volatile Acidity variable in the linear model, which didn't seem to has a great influence at first glance, but it was the most relevant variable after alcohol. Anyway after considering it for a while, I came up to the conclusion that unlike density, it wasn't strongly correlated to alcohol, therefore the influence it has on the quality wasn't tight to other variable.
+
+In addition to the findings related to the linear model, I found a clear pattern in alcohol, density and residual sugar plot. The alcohol is placed on strips according to its graduation (which was split into buckets), and when I generated plots faceted by quality, it was clear how wines moved from top to bottom strips across the different qualities.
+
+As the current model didn't predict the quality very well (r-squared=0.264), in a future work I would explore the Volatile Acidity in more detail and consider the alcohol strips pattern to try another model to fit better the data.
