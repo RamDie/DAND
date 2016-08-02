@@ -28,84 +28,98 @@ str(wws)
 summary(wws)
 ```
 
+```{r, echo=FALSE, message=FALSE, warning=FALSE, functions}
+create_plot <- function(variable,binwidth){
+  plot <- ggplot(aes_string(x = variable), data = wws) 
+  plot <- plot + geom_histogram(binwidth=binwidth)
+  return(plot)}
+```
 
 ```{r plot, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=fixed.acidity), data=wws) +
-  geom_histogram() 
+plot <- create_plot('fixed.acidity',0.1) 
+plot + scale_x_continuous(breaks = seq(0,max(wws$fixed.acidity),0.5))
+summary(wws$fixed.acidity)
 ```
 
 <p>Most wines' fixed acidity lies between 6 and 8 with a peak around 7. The distribution is approximately normal with many outliers to the right. </p>
 
 
 ```{r plot2, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=volatile.acidity), data=wws) +
-  geom_histogram(binwidth=0.01) +
-  scale_x_continuous(breaks = seq(0,max(wws$volatile.acidity),0.05))
+plot<-create_plot('volatile.acidity',0.01)
+plot + scale_x_continuous(breaks = seq(0,max(wws$volatile.acidity),0.05))
+summary(wws$volatile.acidity)
 ```
 
 <p>Most wines volatile acidity lies between 0.2 and 0.4. The distribution is roughly normal, but a bit right skewed. Again many outlier to the right.</p>
 
 ```{r plot3, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=citric.acid), data=wws) +
-  geom_histogram(binwidth=0.01) +
-  scale_x_continuous(limits=c(0,0.9),breaks = seq(0,max(wws$citric.acid),0.05))
+plot<-create_plot('citric.acid',0.01)
+plot + scale_x_continuous(limits=c(0,0.9),
+                          breaks = seq(0,max(wws$citric.acid),0.05))
+summary(wws$citric.acid)
 ```
 
 <p>The distribution is approximately normal but there is a striking peak close to 0.5. I wonder why this peak is placed at that particular value... There are multiples outliers to the right as in the last two plots.</p> 
 
 ```{r plot4, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=residual.sugar), data=wws) +
-  geom_histogram(binwidth=0.1) +
-  scale_x_continuous(limits=c(0,30),breaks = seq(0,30,1))
+plot<-create_plot('residual.sugar',0.1)
+plot + scale_x_continuous(limits=c(0,30),
+                          breaks = seq(0,30,1))
+summary(wws$residual.sugar)
 ```
 <p>Very different from the previous variables distribution. It is notorious how the highest wine counts are placed around two and then the number decreases drastically to the right.</p>
 
 ```{r plot5, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=chlorides), data=wws) +
-  geom_histogram(binwidth=0.001) +
-  scale_x_continuous(limits=c(0,0.2),breaks = seq(0,0.2,0.01))  
+plot<-create_plot('chlorides',0.001)
+plot + scale_x_continuous(limits=c(0,0.2),
+                          breaks = seq(0,0.2,0.01))
+summary(wws$chlorides)
 ```
 <p>It is again roughly normal, with multiples outliers to the right.</p>
 
 ```{r plot6, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=free.sulfur.dioxide), data=wws) +
-  geom_histogram(binwidth=1) +
-  scale_x_continuous(limits=c(0,150),breaks = seq(0,150,10))    
+plot<-create_plot('free.sulfur.dioxide',1)
+plot + scale_x_continuous(limits=c(0,150),breaks = seq(0,150,10))
+summary(wws$free.sulfur.dioxide)
 ```
 <p>Roughly normal, with a salient peak around 30, which is a bit striking because the frequency for this peak is around 25 greater than the following peak.</p>
 
 ```{r plot7, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=total.sulfur.dioxide), data=wws) +
-  geom_histogram(binwidth=5) +
-  scale_x_continuous(limits=c(0,300),breaks = seq(0,300,20))  
+plot<-create_plot('total.sulfur.dioxide',5)
+plot +  scale_x_continuous(limits=c(0,300),
+                           breaks = seq(0,300,20))  
+summary(wws$total.sulfur.dioxide)
 ```
 <p>Distribution approximately normal with a peak around 120.</p>
 
 ```{r plot8, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=density), data=wws) +
-    geom_histogram(binwidth=0.0005) +
-    scale_x_continuous(limits=c(0.985,1.02),breaks = seq(0.985,1.02,0.005))
+plot<-create_plot('density',0.0005)
+plot +  scale_x_continuous(limits=c(0.985,1.02),
+                           breaks = seq(0.985,1.02,0.005))
+summary(wws$density)
 ```
 <p>Again distribution tends to be normal and many outliers to the right. The peak is around 0.9925</p>
 
 ```{r plot9, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=pH), data=wws) +
-  geom_histogram(binwidth=0.01) +
-  scale_x_continuous(limits=c(2.7,max(wws$pH)),breaks = seq(2.7,max(wws$pH),0.1))
+plot<-create_plot('pH',0.01)
+plot + scale_x_continuous(limits=c(2.7,max(wws$pH)),
+                          breaks = seq(2.7,max(wws$pH),0.1))
+summary(wws$pH)
 ```
 <p>It is the distribution closest to the normal one I've seen so far. And also one of the few without striking outliers.</p>
 
 ```{r plot10, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=sulphates), data=wws) +
-  geom_histogram(binwidth=0.01) +
-  scale_x_continuous(limits=c(0.2,max(wws$sulphates)),breaks = seq(0.2,max(wws$sulphates),0.05))
+plot<-create_plot('sulphates',0.01)
+plot +  scale_x_continuous(limits=c(0.2,max(wws$sulphates)),
+                           breaks = seq(0.2,max(wws$sulphates),0.05))
+summary(wws$sulphates)
 ```
 <p>It is a right skewed distribution with some outliers to the right.</p>
 
 ```{r plot11, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=alcohol), data=wws) +
-  geom_histogram(binwidth=0.1) +
-  scale_x_continuous(limits=c(8,max(wws$alcohol)),breaks = seq(8,max(wws$alcohol),0.5))
+plot<-create_plot('alcohol',0.1)
+plot + scale_x_continuous(limits=c(8,max(wws$alcohol)),
+                          breaks = seq(8,max(wws$alcohol),0.5))
 
 summary(wws$alcohol)
 ```
@@ -113,7 +127,7 @@ summary(wws$alcohol)
 
 ```{r plot12, echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(x=quality), data=wws) +
-  geom_bar()
+geom_bar()
 ```
 
 <p>Six is clearly the most frequent quality. In spite of the range goes from 0 to 10, there are not wines qualified with 0, 1, 2 or 10.</p>
@@ -188,19 +202,22 @@ by(wws$alcohol, wws$quality,summary)
 The plots confirm the high correlation between alcohol and quality. The relationship doesn't seem to be linear. From three to five the median alcohol decrease and it increases from there on. There are very few wines under nine category, and one of them is an outlier.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=density,fill = quality),data=subset(wws, density<quantile(density,0.999))) +
+ggplot(aes(x=density,fill = quality),
+       data=subset(wws,density<quantile(density,0.999))) +
   scale_fill_brewer(palette='Reds') +
   geom_histogram()
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(quality,density),data=subset(wws, density<quantile(density,0.9995))) +
-  geom_jitter(alpha=0.2)
+ggplot(aes(quality,density),
+       data=subset(wws, density<quantile(density,0.9995))) +
+geom_jitter(alpha=0.2)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(quality,density),data=subset(wws, density<quantile(density,0.9995))) +
-  geom_boxplot()
+ggplot(aes(quality,density),
+       data=subset(wws, density<quantile(density,0.9995))) +
+geom_boxplot()
 
 by(wws$density, wws$quality,summary)
 ```
@@ -211,23 +228,29 @@ The relation between density and quality is not as clear as alcohol and quality,
 
 require(gridExtra)
 
-p1 <- ggplot(aes(alcohol,density),data=subset(wws, density<quantile(density,0.9995))) +
-  geom_point(alpha=0.1) +
-  geom_smooth()
+p1 <- ggplot(aes(alcohol,density),
+      data=subset(wws, density<quantile(density,0.9995))) +
+      geom_point(alpha=0.1) +
+      geom_smooth()
 
 p2 <- ggplot(aes(alcohol,total.sulfur.dioxide),data=wws) +
-  geom_point(alpha=0.03) +
-  geom_smooth()
+      geom_point(alpha=0.03) +
+      geom_smooth()
 
 p3 <- ggplot(aes(alcohol,chlorides),data=wws) +
-  geom_point(alpha=0.03) +
-  geom_smooth()
+      geom_point(alpha=0.03) +
+      geom_smooth()
 
-p4 <- ggplot(aes(alcohol,residual.sugar),data=subset(wws, residual.sugar<quantile(residual.sugar,0.9995))) +
-  geom_point(alpha=0.03)+
-  geom_smooth()
+p4 <- ggplot(aes(alcohol,residual.sugar),
+             data=subset(wws,
+                         residual.sugar<quantile(residual.sugar,0.9995))) +
+      geom_point(alpha=0.03)+
+      geom_smooth()
 
-grid.arrange(p1, arrangeGrob(p2,p3,p4, ncol=3), heights=c(2.5/4, 1.5/4), ncol=1)
+grid.arrange(p1, 
+             arrangeGrob(p2,p3,p4, ncol=3), 
+             heights=c(2.5/4, 1.5/4), 
+             ncol=1)
 ```
 
 <p>Across this serie of alcohol plots a negative correlation can be observed, being the most notorious the one related to density. The total sulfur dioxide and chlorides plots show a slight slope, whereas that in the residual.sugar plot has a non linear relation where two main groups with highest concentration of wines can be observed, one at the top left corner and the other one at the botom. </p>
@@ -237,7 +260,8 @@ ssres = subset(wws, residual.sugar<quantile(residual.sugar,0.9995))
 ggplot(aes(residual.sugar,density), data = ssres) +
   geom_point(alpha=0.1)+
   geom_smooth() +
-  scale_x_continuous(breaks = seq(min(ssres$residual.sugar),max(ssres$residual.sugar),2))  
+  scale_x_continuous(breaks = seq(min(ssres$residual.sugar),
+                                  max(ssres$residual.sugar),2))  
   
 ```
 <p>This plot shows a high correlation, and there is a clear concentration of wines around 1.6 of residual.sugar </p>
@@ -263,42 +287,54 @@ wws$quality <- factor(wws$quality, ordered = T)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=total.sulfur.dioxide,y=density),data=subset(wws, total.sulfur.dioxide<quantile(total.sulfur.dioxide,0.99) & density<quantile(density,0.99))) +
-   scale_fill_brewer(palette = 'Blues') +
-  geom_point(aes(color=alcohol), alpha=0.7)
+
+diox_quant <- quantile(wws$total.sulfur.dioxide,0.99)
+dens_quant <- quantile(wws$density,0.99)
+
+ggplot(aes(x=total.sulfur.dioxide,y=density),
+       data=subset(wws, 
+                   total.sulfur.dioxide<diox_quant & density<dens_quant)) +
+scale_fill_brewer(palette = 'Blues') +
+geom_point(aes(color=alcohol), alpha=0.7)
 ```
 
 This plot shows a great variation, but it is clear that alcohol level tends to increase with density as much as with total sulfur dioxide.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=alcohol,y=density,color=quality),data=subset(wws, density<quantile(density,0.99))) +
-  scale_color_brewer(type = 'div') +
-  geom_point()
+ggplot(aes(x=alcohol,y=density,color=quality),
+       data=subset(wws, density<quantile(density,0.99))) +
+scale_color_brewer(type = 'div') +
+geom_point()
 ```
 
 Given that Alcohol and Density are the most correlated variable with Quality, I expected this plot to show a significant relation between them. But I didn't get the expected result, the only strong relation in this plot is the one between alcohol and quality.
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=alcohol,y=residual.sugar,color=quality),data=subset(wws, residual.sugar<quantile(residual.sugar,0.99))) +
-  scale_color_brewer(type = 'div') +
-  geom_point()
+ggplot(aes(x=alcohol,y=residual.sugar,color=quality),
+       data=subset(wws, residual.sugar<quantile(residual.sugar,0.99))) +
+scale_color_brewer(type = 'div') +
+geom_point()
 ```
 <p>In spite of the correlation value is practically zero, I had some reasons to believe that there could be some correlation between these three variables, due to the fact that there is a strong correation between residual.sugar and alcohol and with alcohol and quality. But this plot only seems to show a strong correlation between alcohol and quality.</p>
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 wws$alcohol.bucket <- cut(wws$alcohol, c(7,8,9,10,11,12,13,14,15))
 
-ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),data=subset(wws, density<quantile(density,0.99))) +  scale_color_brewer(type = 'div') +
-  geom_point()
+ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),
+       data=subset(wws, density<quantile(density,0.99))) +
+scale_color_brewer(type = 'div') +
+geom_point()
 ```
 
 This plots seems to express a short trend between density, residual sugar and alcohol. The alcohol seems to be placed in three strips approximately. The lower one shows the biggest alcohol level, the middle one an intermediate level, and the upper one the lowest level.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),data=subset(wws, density<quantile(density,0.99))) +  scale_color_brewer(type = 'div') +
-  geom_point() +
-  facet_wrap(~quality)
+ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),
+       data=subset(wws, density<quantile(density,0.99))) +
+scale_color_brewer(type = 'div') +
+geom_point() +
+facet_wrap(~quality)
 ```
 
 There is a clear quality trend across this plots. As the quality increases it is notorious how it moves from upper strip to lower one.
@@ -349,14 +385,14 @@ ggplot(aes(x=alcohol,fill = quality),data=wws) +
   scale_fill_brewer(palette='Reds') +
   geom_histogram() +
   labs(title = "Alcohol by Quality") +
-  xlab('Alcohol') +
+  xlab('Alcohol %') +
   ylab('Number of Wines')
 
 ggplot(aes(quality,alcohol),data=wws) +
   geom_boxplot() +
   labs(title = "Quality by Alcohol") +
   xlab('Quality') +
-  ylab('Alcohol')
+  ylab('Alcohol %')
 ```
 
 ###Description Two
@@ -364,12 +400,14 @@ The correlation of quality with alcohol is not linear, but clearly the quality i
 
 ###Plot Three
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, Plot_Three}
-ggplot(aes(x=residual.sugar,y=density,color=alcohol.bucket),data=subset(wws, density<quantile(density,0.99))) +  scale_color_brewer(type = 'div') +
-  geom_point() +
-  facet_wrap(~quality) +
-  labs(title = "Quality by Density, Residual Sugar and Alcohol") +
-  xlab('Residual Sugar') +
-  ylab('Density')
+ggplot(aes(x=residual.sugar,y=density, color=alcohol.bucket),
+       data=subset(wws, density<quantile(density,0.99))) +
+scale_color_brewer(type = 'div', name="Alcohol %") +
+geom_point() +
+facet_wrap(~quality) +
+labs(title = "Quality by Density, Residual Sugar and Alcohol") +
+xlab('Residual Sugar (g / dm^3)') +
+ylab('Density (g / cm^3)') 
 ```
 
 ###Description Three
