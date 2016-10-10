@@ -1,0 +1,2 @@
+- Function to detect outliers
+  http://stackoverflow.com/questions/11686720/is-there-a-numpy-builtin-to-reject-outliers-from-a-list
