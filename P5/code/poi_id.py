@@ -23,9 +23,13 @@ with open("final_project_dataset.pkl", "r") as data_file:
 ### 		Task 2: Remove outliers			 ###
 ################################################
 
+#These three outliers were found by visualizing the dataset
 data_dict.pop("TOTAL")
 data_dict.pop("THE TRAVEL AGENCY IN THE PARK")
 data_dict.pop("LOCKHART EUGENE E")
+
+#These outliers were found by using the functions "outliers_by" and "find_ouliers" included in my_function.py
+#Only NO-POI are Discarded (in order to ensure this, the function outliers_by takes into account the boolean data_point['poi'] )
 data_dict.pop("FREVERT MARK A")
 data_dict.pop("LAVORATO JOHN J")
 data_dict.pop("BHATNAGAR SANJAY")
