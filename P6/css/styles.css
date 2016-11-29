@@ -1,0 +1,38 @@
+  body {
+    font: 10px sans-serif;
+  }
+
+  h1 {
+    margin-left: 180;
+    color: black;
+  }
+
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    fill: steelblue;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+
+  div.occup_buttons {
+  position: fixed;
+  top: 50px;
+  left: 10px;
+  }
+
+
+  div.occup_buttons div {
+    background-color: rgb(251, 201, 127);
+    padding: 3px;
+    margin: 7px;
+    cursor: pointer;
+  }  

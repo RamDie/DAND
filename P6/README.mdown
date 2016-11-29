@@ -1,0 +1,21 @@
+#Prosper Loan Data Visualization
+
+##Summary
+This data visualization shows how the prosper rating is related to Occupation.
+Specifically, it tries to point out that the more intellectual and technological an occupation is the higher prosper rating the worker gets.
+Five cases were picked from the dataset to show this situation, and sorted by it intellectual and technological skills required
+(Homemaker, Bus Driver, Sales-commission, Scientis and Computer Programmer)
+
+##Design
+I decided that the best way to present the data was to use a multiple barchart, because grouping occupations by prosper rating allowed to better compare them.
+As regards to colors, I decided to use an qualitative scale with five of them, each one representing a different occupation. In order to show this relation
+(occupations with colors), five legends were included.
+The y axis shows the percentage of each prosper rating for a particular occupation, and x axis represent the prosper ratings themselves.
+
+##Feedback
+This is the initial chart, I will use it to generate feedback.
+
+##Resources
+https://bl.ocks.org/mbostock/3887051
+http://alignedleft.com/tutorials/d3
+http://javascript.tutorialhorizon.com/2014/11/20/a-visual-explanation-of-the-enter-update-and-exit-selections-in-d3js/
