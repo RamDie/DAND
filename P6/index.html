@@ -239,6 +239,18 @@ function draw(data){
       newOccup.splice(occInd,1)
     }
     
+    /**
+     * Compare the occupations based on the dynamic occupation position (as per user selection)
+     * @param {string} a Occupation a
+     * @param {string} b Occupation b
+    */
+    function compareOccup(a,b) {
+      if (newOccup.indexOf(a.name) < newOccup.indexOf(b.name))
+        return -1;
+      if (newOccup.indexOf(a.name) > newOccup.indexOf(b.name))
+        return 1;
+      return 0;
+    }  
 
     for(var i = 0; i < prospRates.length ; i++){
       var objChart = {prate:'',occups:[]}
@@ -257,6 +269,8 @@ function draw(data){
         }
       });
       
+      // Data is ordered by occupation in order to avoid undesirables effects in the transtition
+      occups.sort(compareOccup);      
 
       objChart.occups = occups;
       filteredChart[i] = objChart;
