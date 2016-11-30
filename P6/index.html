@@ -214,6 +214,11 @@ function draw(data){
     var occups_order = [];
     var increasion = false;
 
+    if (button == null){
+      d3.select("h1")
+        .text("Prosper Rating per Occupation [" + occupation + "]");
+    }
+
     occInd = newOccup.indexOf(occupation);
 
     if (occInd == -1){
@@ -376,6 +381,9 @@ function draw(data){
 
   /*****************BUTTONS*****************/
 
+          d3.select("h1")
+          .text("Prosper Rating per Occupation");
+          
           newOccup = [];
 
           d3.selectAll('rect').remove();
@@ -403,7 +411,7 @@ function draw(data){
       }
     }, timeInt);
   }
-      }
+}
 </script>
 </head>
 <body>

@@ -11,12 +11,16 @@ I decided that the best way to present the data was to use a multiple barchart, 
 As regards to colors, I decided to use an qualitative scale with five of them, each one representing a different occupation. In order to show this relation
 (occupations with colors), five legends were included.
 The y axis shows the percentage of each prosper rating for a particular occupation, and x axis represent the prosper ratings themselves.
-###First Feedbak
+###First Feedback
 I concluded that the animation seemed not to accomplish it purpose. In order to make more clear that the higher prosper ratings percentage increase as the occupation change (towards more intellectual and technological skills), I decided to color the current occupation in red and leave the others in white.
+###Second Feedback
+I decided that including the occupation name in the title during the animation would help the user to understand the idea. And in order to decrease the time spent in loading the file, I decided to leave only those records related to the selected occupations. To achieve this goal I did some data wrangling with python, to generate a new file with the specific occupations.
 
 ##Feedback
 ###First
-In spite of the user understood the visualization related occupations with prosper ratings, he didn't get what the visualization was trying to point out. 
+In spite of the user understood the visualization related occupations with prosper ratings, he didn't get what the visualization was trying to point out.
+###Second
+The user has a more clear idea of what is going on, but he had to watch the animation multiple times for being able to understand. And appart from that he complained about the fact that the visualization takes too long to load.
 
 ##Resources
  *https://bl.ocks.org/mbostock/3887051
