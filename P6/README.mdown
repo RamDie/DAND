@@ -11,11 +11,14 @@ I decided that the best way to present the data was to use a multiple barchart, 
 As regards to colors, I decided to use an qualitative scale with five of them, each one representing a different occupation. In order to show this relation
 (occupations with colors), five legends were included.
 The y axis shows the percentage of each prosper rating for a particular occupation, and x axis represent the prosper ratings themselves.
+###First Feedbak
+I concluded that the animation seemed not to accomplish it purpose. In order to make more clear that the higher prosper ratings percentage increase as the occupation change (towards more intellectual and technological skills), I decided to color the current occupation in red and leave the others in white.
 
 ##Feedback
-This is the initial chart, I will use it to generate feedback.
+###First
+In spite of the user understood the visualization related occupations with prosper ratings, he didn't get what the visualization was trying to point out. 
 
 ##Resources
-https://bl.ocks.org/mbostock/3887051
-http://alignedleft.com/tutorials/d3
-http://javascript.tutorialhorizon.com/2014/11/20/a-visual-explanation-of-the-enter-update-and-exit-selections-in-d3js/
+ *https://bl.ocks.org/mbostock/3887051
+ *http://alignedleft.com/tutorials/d3
+ *http://javascript.tutorialhorizon.com/2014/11/20/a-visual-explanation-of-the-enter-update-and-exit-selections-in-d3js/

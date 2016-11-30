@@ -25,6 +25,9 @@ function draw(data){
 // Qualitative colors for occupations
   var colorRange = ["#98AFC7", "#F2BB66","#307D7E", "#C7B097", "#7D312F"];
 
+// Default colors for introduction
+  var markColorRange =  ["#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"];  
+
 // Occupations names  
   var occupNames = ['Homemaker','Bus Driver','Sales - Commission','Scientist','Computer Programmer'];
 
@@ -35,6 +38,9 @@ function draw(data){
 // Scales
   var color = d3.scale.ordinal()
       .range(colorRange);   
+
+  var markColor = d3.scale.ordinal()
+      .range(markColorRange);      
 
 // Axis
   var xAxis = d3.svg.axis()
@@ -202,7 +208,7 @@ function draw(data){
    * @param {string} button
    * @param {int} indx 
    */
-   function update(occupation,button,indx) {
+   function update(occupation,button,mark,indx) {
     var filteredChart = [];
     var occups = [];
     var occups_order = [];
@@ -261,7 +267,17 @@ function draw(data){
 
     var occPos = 0;
 
-    var color_scale = color;
+    // The current occupation is colored in red during the animation, and the others in white
+    if (mark == true){
+      colorIntro = markColorRange.slice();
+      occPos = occups_order.indexOf(occupation);
+      colorIntro[occPos] = "red";
+      var color_scale = d3.scale.ordinal()
+          .range(colorIntro); 
+
+    }else{
+      var color_scale = color;
+    }
 
     var rects = svg.selectAll(".bar") 
       .data(filteredChart)
@@ -337,7 +353,7 @@ function draw(data){
   var occupIdx = 0;
 
   setTimeout(function() {
-    update(occupNames[occupIdx],null,occupIdx);
+    update(occupNames[occupIdx],null,true,occupIdx);
     occupIdx++;
 
     startIntroduction(3000);   
@@ -350,7 +366,7 @@ function draw(data){
  */
   function startIntroduction(timeInt){
     var occup_interval = setInterval(function() {
-      update(occupNames[occupIdx],null,occupIdx);
+      update(occupNames[occupIdx],null,true,occupIdx);
 
       timeInt = 1000;
       occupIdx++;
