@@ -1,0 +1,116 @@
+<html>
+<head>
+	<title></title>
+  <link rel="stylesheet" type="text/css" href="css/styles_final.css">
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="js/functions.js"></script>
+</head>
+<body>
+<div class="slideshow-container">
+  <div class="mySlides fade" id="prates">
+    <div class="headFrame">
+    <span class="headText">What <span style="color:red;">Prosper Ratings</span> are?</span>
+    </div>
+    <br><br><br>
+    <span class="bodyText">When a <b>borrower</b> applies for a <b>loan</b>, he or she has to present an <b>application</b> to the <b>lender</b> and this application is rated based on the <b>risks</b> giving that <b>loan</b> represents. The lower the risk the better the rating assigned, and the lower the rate the borrower will have to pay. </span>
+    <br><br><br>
+    <span class="bodyText">Below we can see the <b>prosper ratings</b> classifications ordered from higher to lower risk:</span>
+    <br><br><br>
+  </div>
+
+
+  <div class="mySlides fade" id="occups">
+    <div class="headFrame">
+  	<span class="headText">Is there any relation between <span style="color:red;">Occupations</span> and <span style="color:red;">Prosper Ratings</span>?</span>
+    </div>
+  	<br><br><br>
+  	<span class="bodyText">It turns out to be that <b>the more technological skills an occupation requires, the better Prosper Rating it tends to get.</b></span>
+    <br><br>
+    <span class="bodyText"> Let's take five occupations: Bus Driver, Computer Programmer, Homemaker, Sales-Comission and Scientist. </span>
+    <br><br>
+    <span class="bodyText"> If we order them by the required <b>technological skills</b> we get the following: </span>
+    <div class="plot"></div>
+    <br><br><br>
+    <span class="bodyText">Now let's take a look at an animation which shows this relation expressed by the <b>percentage of workers</b> for each <b>prosper rating</b> for every aforementioned <b>occupation</b>. After that you can play with the data, and check it by yourself!</span>
+  </div>
+
+  <div class="mySlides fade" id="plots">
+  </div>
+
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+<br>
+
+<!-- <div style="text-align:center"> -->
+<div class="dotSel">
+  <span class="dot" onclick="currentSlide(1)"></span> 
+  <span class="dot" onclick="currentSlide(2)"></span> 
+  <span class="dot" onclick="currentSlide(3)"></span> 
+</div>
+
+<script type="text/javascript">
+var occup_interval;
+
+var slideIndex = 1;
+
+// Three slides are shown: the two first with an explanation of the idea, and the last one with an animation and an interactive barchart.
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1} 
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none"; 
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block"; 
+  dots[slideIndex-1].className += " active";
+
+  var pexist = document.getElementsByTagName("svg");
+  
+  d3.select(".occup_buttons").remove();
+
+  clearInterval(occup_interval);
+
+  // First slide with prosper ratings plot
+  if (n == 1){ 
+    if(pexist.length == 0){
+      showPlot('prosper');
+    }
+  // Second slide with occupations plot
+  }else if(n == 2){
+    if(pexist.length == 1){
+      showPlot('occup');
+    }
+
+  // Third slide with animation & inteactive plot  
+  }else if(n==3){
+    d3.select("#plots svg").remove();
+    d3.select("h1").remove();
+
+    // Data is uploaded
+    d3.csv("data/prosperLoanData.csv",function(d){
+      // Empty prosper are discarded
+      if ( d['ProsperRating (Alpha)'] != '' ){
+        return d;
+      }
+    }, draw);
+  }
+}
+</script>
+</body>
+</html>

@@ -15,8 +15,10 @@ The y axis shows the percentage of each prosper rating for a particular occupati
 I concluded that the animation seemed not to accomplish it purpose. In order to make more clear that the higher prosper ratings percentage increase as the occupation change (towards more intellectual and technological skills), I decided to color the current occupation in red and leave the others in white.
 ###Second Feedback
 I decided that including the occupation name in the title during the animation would help the user to understand the idea. And in order to decrease the time spent in loading the file, I decided to leave only those records related to the selected occupations. To achieve this goal I did some data wrangling with python, to generate a new file with the specific occupations.
-###Third Feedbak
+###Third Feedback
 In order to avoid the multiple transitions, and to show clearly the difference when a new occupation was selected, I had to sort the occupations based on the predefined occupation's array each time a new occupation was selected.
+##Fourth Feedback
+Given that the ideas expressed by this visualization are a bit abstract and technical, I decided to use a slider in order to include some introduction to explain the main ideas behind it. I also fix a bug in the animation related to removing an occupation, and I modified the way occupations are selected to make it more friendly.
 
 ##Feedback
 ###First
@@ -25,8 +27,11 @@ In spite of the user understood the visualization related occupations with prosp
 The user has a more clear idea of what is going on, but he had to watch the animation multiple times for being able to understand. And appart from that he complained about the fact that the visualization takes too long to load.
 ###Third
 When interacting with the visualization the user found confusing the transition when a new occupation was selected, because the bars changed their color at the same time they changed the position. He wonderer if that was related to the purpose of the visualization itself, or if that just was an undesirable effect.
+###Fourth
+The user told me that it was hard to get the main idea just by watching the animation and playing with the interactive plot. He also found a bug in the animation when removing occupations, and made me realize that the occupation selection was rather unfriendly and it was difficult to get used to.
 
 ##Resources
- *https://bl.ocks.org/mbostock/3887051
- *http://alignedleft.com/tutorials/d3
- *http://javascript.tutorialhorizon.com/2014/11/20/a-visual-explanation-of-the-enter-update-and-exit-selections-in-d3js/
+*https://bl.ocks.org/mbostock/3887051
+*http://alignedleft.com/tutorials/d3
+*http://javascript.tutorialhorizon.com/2014/11/20/a-visual-explanation-of-the-enter-update-and-exit-selections-in-d3js/
+*http://www.w3schools.com/w3css/w3css_slideshow.asp
