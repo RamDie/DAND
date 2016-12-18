@@ -17,7 +17,7 @@ I concluded that the animation seemed not to accomplish it purpose. In order to 
 I decided that including the occupation name in the title during the animation would help the user to understand the idea. And in order to decrease the time spent in loading the file, I decided to leave only those records related to the selected occupations. To achieve this goal I did some data wrangling with python, to generate a new file with the specific occupations.
 ###Third Feedback
 In order to avoid the multiple transitions, and to show clearly the difference when a new occupation was selected, I had to sort the occupations based on the predefined occupation's array each time a new occupation was selected.
-##Fourth Feedback
+###Fourth Feedback
 Given that the ideas expressed by this visualization are a bit abstract and technical, I decided to use a slider in order to include some introduction to explain the main ideas behind it. I also fix a bug in the animation related to removing an occupation, and I modified the way occupations are selected to make it more friendly.
 
 ##Feedback
